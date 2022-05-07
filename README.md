@@ -1,3 +1,6 @@
+# Mario Theme
+![mario](mario.jpg)
+
 # <a name="title">Taichi Voxel Challenge</a>
 
 <p align="center">
