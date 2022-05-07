@@ -1,6 +1,6 @@
 # Mario Theme
 ![mario](mario.jpg)
-# 野兽先辈
+# a 24 years old student
 ![inm](inm.jpg)
 
 # <a name="title">Taichi Voxel Challenge</a>
