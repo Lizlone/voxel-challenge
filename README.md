@@ -1,5 +1,7 @@
 # Mario Theme
 ![mario](mario.jpg)
+# 野兽先辈
+![inm](inm.jpg)
 
 # <a name="title">Taichi Voxel Challenge</a>
 
