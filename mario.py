@@ -1,5 +1,3 @@
-from matplotlib.colors import rgb2hex
-from matplotlib.pyplot import box
 from scene import Scene
 import taichi as ti
 from taichi.math import *
@@ -54,18 +52,18 @@ def question(i, j, k, a, offset):
 def initialize_voxels():
     for i, j, k in ti.ndrange((-64, 64), (-64, 64), (-64, 64)):
         offset_r = vec3(28, 0, 0)
-        # # mushroom
+        # mushroom
         if opSmoothSubtraction(j-20, sdEllipsoid(vec3(i, j-35, k), vec3(35, 28, 35)), 10) < 0:  # hat
             scene.set_voxel(vec3(i, j, k)+offset_r, 1, vec3(1, 0, 0))
-            if sdCapsule(vec3(i, j-40, k), vec3(0, 0, k), vec3(0, 0, -k), 12) < 0:
+            if sdCapsule(vec3(i, j-40, k), vec3(0, 0, k), vec3(0, 0, -k), 12) < 0:  # spot
                 scene.set_voxel(vec3(i, j, k)+offset_r, 1, vec3(1))
             if sdCapsule(vec3(i, j-40, k), vec3(i, 0, 0), vec3(-i, 0, 0), 12) < 0:
                 scene.set_voxel(vec3(i, j, k)+offset_r, 1, vec3(1))
             if sdCapsule(vec3(i, j-40, k), vec3(0, 0, 0), vec3(0, 64, 0), 12) < 0:
                 scene.set_voxel(vec3(i, j, k)+offset_r, 1, vec3(1))
-        if opSmoothSubtraction(j, sdRoundedCylinder(vec3(i, j-10, k), 10, 10, 15), 13) < 0:
+        if opSmoothSubtraction(j, sdRoundedCylinder(vec3(i, j-10, k), 10, 10, 15), 13) < 0:  # body
             scene.set_voxel(vec3(i, j, k)+offset_r, 1, vec3(244/255, 220/255, 180/255))
-            if sdCapsule(vec3(abs(i), j-12, k), vec3(6, 0, k), vec3(6, 5, k), 2) < 0:
+            if sdCapsule(vec3(abs(i), j-12, k), vec3(6, 0, k), vec3(6, 5, k), 2) < 0:  # eyes
                 scene.set_voxel(vec3(i, j, k)+offset_r, 1, vec3(0))
         # block
         if block(vec3(i, j+32, k), vec3(22), 10) < 0:
@@ -87,7 +85,7 @@ def initialize_voxels():
         if vec3(i, j, k).norm()-28 < 0 and j <= 0:  # b
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(1))
             inside['b'] = 1
-        if sdCapsule(vec3(i, j, k), vec3(-64, -64, 32), vec3(64, 64, -32), 10) < 0 and (inside['t'] or inside['b']):
+        if sdCapsule(vec3(i, j, k), vec3(-64, -64, 32), vec3(64, 64, -32), 10) < 0 and (inside['t'] or inside['b']):  # spot
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(0, 1, 0))
         if sdCapsule(vec3(i, j, k), vec3(64, -32, 64), vec3(-64, 32, -64), 13) < 0 and (inside['t'] or inside['b']):
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(0, 1, 0))
