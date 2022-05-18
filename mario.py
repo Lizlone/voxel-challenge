@@ -85,13 +85,15 @@ def initialize_voxels():
         if vec3(i, j, k).norm()-28 < 0 and j <= 0:  # b
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(1))
             inside['b'] = 1
-        if sdCapsule(vec3(i, j, k), vec3(-64, -64, 32), vec3(64, 64, -32), 10) < 0 and (inside['t'] or inside['b']):  # spot
+        if inside['t'] or inside['b']:
+            inside['egg'] = 1
+        if sdCapsule(vec3(i, j, k), vec3(-64, -64, 32), vec3(64, 64, -32), 10) < 0 and inside['egg']:  # spot
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(0, 1, 0))
-        if sdCapsule(vec3(i, j, k), vec3(64, -32, 64), vec3(-64, 32, -64), 13) < 0 and (inside['t'] or inside['b']):
+        if sdCapsule(vec3(i, j, k), vec3(64, -32, 64), vec3(-64, 32, -64), 13) < 0 and inside['egg']:
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(0, 1, 0))
-        if sdCapsule(vec3(i, j, k), vec3(-64, 108, 64), vec3(64, -108, -64), 18) < 0 and (inside['t'] or inside['b']):
+        if sdCapsule(vec3(i, j, k), vec3(-64, 108, 64), vec3(64, -108, -64), 18) < 0 and inside['egg']:
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(0, 1, 0))
-        if sdCapsule(vec3(i, j, k), vec3(64, 64, 64), vec3(-64, -64, -64), 8) < 0 and (inside['t'] or inside['b']):
+        if sdCapsule(vec3(i, j, k), vec3(64, 64, 64), vec3(-64, -64, -64), 8) < 0 and inside['egg']:
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(0, 1, 0))
 initialize_voxels()
 scene.finish()
