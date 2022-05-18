@@ -78,7 +78,7 @@ def initialize_voxels():
         question(i, j, k, 270, offset_r)
         # yoshi egg
         offset_l = vec3(-36, -36, 0)
-        inside = {'t':0, 'b':0}
+        inside = {'t':0, 'b':0, 'egg':0}
         if sdEllipsoid(vec3(i, j, k), vec3(28, 48, 28)) < 0 and j > 0:  # t
             scene.set_voxel(vec3(i, j, k)+offset_l, 1, vec3(1))
             inside['t'] = 1
