@@ -5,6 +5,9 @@ Change attribution in [scene.py](scene.py)
 `LOOK_AT` is the target you look at when you are pressing `C` to rotate or recording.  
 `INTERVAL_TIME` is the interval time between two frames when recording.  
 
+Use [gif_generater.py](gif_generater.py) to generate your record result.
+![gif](img/mario.gif)
+
 
 # Mario Theme
 ![mario](img/mario.jpg)
@@ -83,4 +86,3 @@ Mouse and keyboard interface:
 ## Show your artwork 
 
 Please put your artwork at the beginning of this README file. Replacing the `demo.jpg` file with your creation will do the job.
-
