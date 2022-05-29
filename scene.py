@@ -5,9 +5,11 @@ import numpy as np
 import taichi as ti
 from renderer import Renderer
 from math_utils import np_normalize, np_rotate_matrix
-import __main__
 
-
+REC = False
+SHOT = False
+LOOK_AT = (0, 0, 0)
+INTERVAL_TIME = 1
 VOXEL_DX = 1 / 64
 SCREEN_RES = (1280, 720)
 TARGET_FPS = 30
@@ -16,7 +18,8 @@ HELP_MSG = '''
 ====================================================
 Camera:
 * Drag with your left mouse button to rotate
-* Press W/A/S/D/Q/E to move
+* Press W/A/S/D/Q/E to move or C to look at center
+* Press R to rotate and record automatically
 ====================================================
 '''
 
@@ -84,11 +87,13 @@ class Camera:
             if win.is_pressed(key):
                 pressed = True
                 dir += np.array(d)
-        if not pressed:
+        if not pressed and not SHOT:
             return False
         dir *= 0.05
-        self._lookat_pos += dir
-        self._camera_pos += dir
+        self._camera_pos = (self._camera_pos + dir + np.array(leftdir)*0.05) if SHOT else (self._camera_pos + dir)
+        self._lookat_pos = self.center_dir if SHOT else (self._lookat_pos + dir)
+        if win.is_pressed('c'):
+            self._lookat_pos = self.center_dir
         return True
 
     @property
@@ -102,6 +107,10 @@ class Camera:
     @property
     def target_dir(self):
         return np_normalize(self.look_at - self.position)
+    
+    @property
+    def center_dir(self):
+        return np_normalize(LOOK_AT - self.position)
 
     def _compute_left_dir(self, tgtdir):
         cos = np.dot(self._up, tgtdir)
@@ -125,8 +134,6 @@ class Scene:
                                  exposure=exposure)
 
         self.renderer.set_camera_pos(*self.camera.position)
-        if not os.path.exists('screenshot'):
-            os.makedirs('screenshot')
 
     @staticmethod
     @ti.func
@@ -160,6 +167,10 @@ class Scene:
         self.renderer.recompute_bbox()
         canvas = self.window.get_canvas()
         spp = 1
+        global REC
+        global SHOT
+        count = 0
+        interval_time = 0
         while self.window.running:
             should_reset_framebuffer = False
 
@@ -179,8 +190,7 @@ class Scene:
             if self.window.is_pressed('p'):
                 timestamp = datetime.today().strftime('%Y-%m-%d-%H%M%S')
                 dirpath = os.getcwd()
-                main_filename = os.path.split(__main__.__file__)[1]
-                fname = os.path.join(dirpath, 'screenshot', f"{main_filename}-{timestamp}.jpg")
+                fname = os.path.join(dirpath, f"screenshot{timestamp}.jpg")
                 ti.tools.image.imwrite(img, fname)
                 print(f"Screenshot has been saved to {fname}")
             canvas.set_image(img)
@@ -190,4 +200,24 @@ class Scene:
                 spp = max(spp, 1)
             else:
                 spp += 1
+            if self.window.is_pressed('r'):
+                count += 1
+                count %= 2
+                if count == 0:
+                    REC = False if REC else True
+                    interval_time = time.time()
+                    print("now recording")
+                    if not os.path.exists("record"):
+                        os.mkdir("record")
+                else:
+                    print("end recording")
+            SHOT = False
+            if REC and (time.time() - interval_time) > INTERVAL_TIME:
+                interval_time = time.time()
+                SHOT = True
+                timestamp = datetime.today().strftime('%Y-%m-%d-%H%M%S')
+                dirpath = os.getcwd()
+                fname = os.path.join(dirpath, f"record/{timestamp}.jpg")
+                ti.tools.image.imwrite(img, fname)
+                print(f"Screenshot has been saved to {fname}")
             self.window.show()

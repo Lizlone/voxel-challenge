@@ -1,10 +1,18 @@
+Press `C` and `W/A/S/D/Q/E`to rotate.  
+Press `R` to rotate camera and recording, screenshots are saved in record file dirctory.  
+![r](img/r.gif)  
+Change attribution in [scene.py](scene.py)  
+`LOOK_AT` is the target you look at when you are pressing `C` to rotate or recording.  
+`INTERVAL_TIME` is the interval time between two frames when recording.  
+
+
 # Mario Theme
-![mario](mario.jpg)
+![mario](img/mario.jpg)
 # a 24 years old student
-![inm](inm.jpg)
+![inm](img/inm.jpg)
 # Saint Diana(unfinished)
 Inspired By [Dina](https://t.bilibili.com/520981951078003843?tab=2)
-![dina](diana.jpg)
+![dina](img/diana.jpg)
 
 # <a name="title">Taichi Voxel Challenge</a>
 
@@ -75,3 +83,4 @@ Mouse and keyboard interface:
 ## Show your artwork 
 
 Please put your artwork at the beginning of this README file. Replacing the `demo.jpg` file with your creation will do the job.
+
